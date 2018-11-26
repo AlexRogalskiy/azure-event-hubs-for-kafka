@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <p align="center">
   <img src="event-hubs.png" alt="Microsoft Azure Event Hubs" width="100"/>
 </p>
@@ -88,3 +89,6 @@ For the most part, the Event Hubs for Kafka Ecosystems has the same defaults, pr
 * The max size of `offset.metadata.max.bytes` is 1024 bytes
 * Offset commits are throttled at 4 calls/second per partition with a max internal log size of 1Mb
 
+=======
+# azure-event-hubs-for-kafka
+>>>>>>> 3bb2498a2db3c1cb41ec058a872eb067829a7fc6
