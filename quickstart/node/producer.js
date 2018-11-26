@@ -9,15 +9,15 @@ var Kafka = require('node-rdkafka');
 
 var producer = new Kafka.Producer({
   //'debug' : 'all',
-  'metadata.broker.list': '{YOUR.EVENTHUBS.FQDN}:9093',
+  'metadata.broker.list': 'eh2ehtesting.servicebus.windows.net:9093',
   'dr_cb': true,  //delivery report callback
   'security.protocol': 'SASL_SSL',
   'sasl.mechanisms': 'PLAIN',
   'sasl.username': '$ConnectionString',
-  'sasl.password': '{YOUR.EVENTHUB.CONNECTION.STRING}'
+  'sasl.password': 'Endpoint=sb://eh2ehtesting.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=IS435QyA5LdieHUQAYmVQ4bSMfBvfu24kCDuX5irjfg='
 });
 
-var topicName = 'test';
+var topicName = 'kafkatest';
 
 //logging debug messages, if debug is enabled
 producer.on('event.log', function(log) {

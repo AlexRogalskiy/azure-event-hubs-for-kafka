@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Confluent.Kafka;
@@ -30,16 +31,32 @@ namespace EventHubsForKafkaSample
                     //{ "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
                 };
 
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                
                 using (var producer = new Producer<long, string>(config, new LongSerializer(), new StringSerializer(Encoding.UTF8)))
                 {
-                    Console.WriteLine("Sending 10 messages to topic: " + topic + ", broker(s): " + brokerList);
-                    for (int x = 0; x < 10; x++)
+                    List<Task> tasks = new List<Task>();
+
+                    Console.WriteLine("Sending messages to topic: " + topic + ", broker(s): " + brokerList);
+                    for (int x = 0; x < 100; x++)
                     {
-                        var msg = string.Format("Sample message #{0} sent at {1}", x, DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.ffff"));
-                        var deliveryReport = await producer.ProduceAsync(topic, DateTime.UtcNow.Ticks, msg);
-                        Console.WriteLine(string.Format("Message {0} sent (value: '{1}')", x, msg));
+                        string msg = string.Format("\"data\": \"{0}\", \"time\": \"{1}\", \"id\":\"{2}\"", x, DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss.ffff"), Guid.NewGuid());
+                        msg = "{" + msg + "}";
+                        //Console.WriteLine(msg);
+                        //string msg = Console.ReadLine();
+                        //Console.ReadLine();
+                        tasks.Add(producer.ProduceAsync(topic, DateTime.UtcNow.Ticks, msg.ToString()));
+                       // Console.WriteLine(string.Format("Message {0} sent (value: '{1}')", x, msg));
+                        //Console.WriteLine("Hit Enter to send next message");
+                        //Console.ReadKey();
                     }
+
+                    await Task.WhenAll(tasks);
                 }
+
+                stopwatch.Stop();                
+                Console.WriteLine($"message/sec: {1000 / (stopwatch.ElapsedMilliseconds / 1000.0)}");
             }
             catch (Exception e)
             {
@@ -58,9 +75,10 @@ namespace EventHubsForKafkaSample
                     { "ssl.ca.location", cacertlocation },
                     { "group.id", consumergroup },
                     { "request.timeout.ms", 60000 },
-                    { "broker.version.fallback", "1.0.0" },         //Event Hubs for Kafka Ecosystems supports Kafka v1.0+, 
+                    { "broker.version.fallback", "1.0.0" },
+                    //{ "auto.offset.reset", "earliest" }, //Event Hubs for Kafka Ecosystems supports Kafka v1.0+, 
                                                                     //a fallback to an older API will fail
-                    //{ "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
+                    { "debug", "security,broker,protocol" }       //Uncomment for librdkafka debugging information
                 };
 
             using (var consumer = new Consumer<long, string>(config, new LongDeserializer(), new StringDeserializer(Encoding.UTF8)))

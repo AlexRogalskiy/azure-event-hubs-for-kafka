@@ -9,17 +9,17 @@ var Transform = require('stream').Transform;
 var Kafka = require('node-rdkafka');
 
 var stream = Kafka.KafkaConsumer.createReadStream({
-    'metadata.broker.list': '{YOUR.EVENTHUBS.FQDN}:9093',
+    'metadata.broker.list': 'eh2ehtesting.servicebus.windows.net:9093',
     'group.id': '$Default', //The default consumer group for EventHubs is $Default
     'socket.keepalive.enable': true,
     'enable.auto.commit': false,
     'security.protocol': 'SASL_SSL',
     'sasl.mechanisms': 'PLAIN',
     'sasl.username': '$ConnectionString',
-    'sasl.password': '{YOUR.EVENTHUB.CONNECTION.STRING}'
+    'sasl.password': 'Endpoint=sb://eh2ehtesting.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=IS435QyA5LdieHUQAYmVQ4bSMfBvfu24kCDuX5irjfg='
 
 }, {}, {
-        topics: 'test',
+        topics: 'kafkatest',
         waitInterval: 0,
         objectMode: false
     });

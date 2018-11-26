@@ -20,11 +20,11 @@ if __name__ == '__main__':
     # See https://github.com/edenhill/librdkafka/blob/master/CONFIGURATION.md
     # See https://github.com/edenhill/librdkafka/wiki/Using-SSL-with-librdkafka#prerequisites for SSL issues
     conf = {
-        'bootstrap.servers': '{YOUR.EVENTHUBS.FQDN}:9093',
+        'bootstrap.servers': 'eh2ehtesting.servicebus.windows.net:9093',
         'security.protocol': 'SASL_SSL',
         'sasl.mechanism': 'PLAIN',
         'sasl.username': '$ConnectionString',
-        'sasl.password': '{YOUR.EVENTHUBS.CONNECTION.STRING}',
+        'sasl.password': 'Endpoint=sb://eh2ehtesting.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=IS435QyA5LdieHUQAYmVQ4bSMfBvfu24kCDuX5irjfg=',
         'client.id': 'python-example-producer'
     }
 
