@@ -19,8 +19,8 @@ namespace EventHubsForKafkaSample
             {
                 Console.WriteLine("Initializing Producer");
                 Worker.Producer(brokerList, connectionString, topic, caCertLocation).Wait();
-                Console.WriteLine("Enter 'y' if you want to continue sending messages");
-                continueWriting = Console.ReadLine();
+                //Console.WriteLine("Enter 'y' if you want to continue sending messages");
+                //continueWriting = Console.ReadLine();
                 //Console.WriteLine("Initializing Consumer");
                 //Worker.Consumer(brokerList, connectionString, consumerGroup, topic, caCertLocation);
                 //Console.ReadKey();
